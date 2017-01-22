@@ -129,6 +129,13 @@ export class SeedConfig {
   APP_CLIENT = argv['client'] || 'client';
 
   /**
+   * The directory where the server files are located.
+   * The default directory is `server`.
+   * @type {string}
+   */
+  APP_SERVER = argv['server'] || 'server';
+
+  /**
    * The bootstrap file to be used to boot the application.
    * @type {string}
    */
@@ -151,6 +158,12 @@ export class SeedConfig {
    * @type {string}
    */
   APP_SRC = `src/${this.APP_CLIENT}`;
+
+  /**
+   * The base folder of the server source files.
+   * @type {string}
+   */
+  APP_SERVER_SRC = `src/${this.APP_SERVER}`;
 
   /**
    * The name of the TypeScript project file
@@ -217,16 +230,34 @@ export class SeedConfig {
   DIST_DIR = 'dist';
 
   /**
+   * The folder for built server files in the `dev` environment.
+   * @type {string}
+   */
+  DEV_SERVER_DEST = `${this.DIST_DIR}/${this.APP_SERVER}/dev`;
+
+  /**
+   * The folder for the built server files in the `prod` environment.
+   * @type {string}
+   */
+  PROD_SERVER_DEST = `${this.DIST_DIR}/${this.APP_SERVER}/prod`;
+
+  /**
+   * The folder for the built server files, corresponding to the current environment.
+   * @type {string}
+   */
+  APP_SERVER_DEST = this.BUILD_TYPE === BUILD_TYPES.DEVELOPMENT ? this.DEV_SERVER_DEST : this.PROD_SERVER_DEST;
+
+  /**
    * The folder for built files in the `dev` environment.
    * @type {string}
    */
-  DEV_DEST = `${this.DIST_DIR}/dev`;
+  DEV_DEST = `${this.DIST_DIR}/client/dev`;
 
   /**
    * The folder for the built files in the `prod` environment.
    * @type {string}
    */
-  PROD_DEST = `${this.DIST_DIR}/prod`;
+  PROD_DEST = `${this.DIST_DIR}/client/prod`;
 
   /**
    * The folder for the built files of the e2e-specs.
@@ -368,7 +399,7 @@ export class SeedConfig {
 
       'app/*': '/app/*',
       // For test config
-      'dist/dev/*': '/base/dist/dev/*',
+      'dist/client/dev/*': '/base/dist/client/dev/*',
       '*': 'node_modules/*'
     },
     packages: {

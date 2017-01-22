@@ -1,9 +1,9 @@
 {
-  "name": "angular-seed",
-  "version": "0.0.0",
-  "description": "Modular starter project for Angular 2 (and beyond) with statically typed build and AoT compilation",
+  "name": "mean-seed",
+  "version": "0.0.1",
+  "description": "Modular starter project for MEAN stack (MongoDB, Express, Angular 2, NodeJS) with statically typed build and AoT compilation with Express",
   "repository": {
-    "url": "https://github.com/mgechev/angular-seed"
+    "url": "https://github.com/lebeker/mean-seed"
   },
   "scripts": {
     "build.dev": "gulp build.dev --color --env-config dev",
@@ -41,6 +41,14 @@
     "serve.compodoc": "node_modules/.bin/compodoc -s"
   },
   "author": "Minko Gechev <mgechev>",
+  "contributors": [
+    {
+      "name": "Valentyn Yakymenko <vyakymenko>"
+    },
+    {
+      "name": "Lance Bekker <lebeker>"
+    }
+  ],
   "license": "MIT",
   "devDependencies": {
     "@angular/compiler-cli": "~2.4.0",
@@ -62,6 +70,9 @@
     "@types/systemjs": "^0.19.31",
     "@types/yargs": "^6.5.0",
     "@types/zone.js": "^0.0.27",
+    "@types/redis": "^0.12.1",
+    "@types/body-parser": "^0.0.33",
+    "@types/compression": "^0.0.33",
     "async": "^2.1.1",
     "autoprefixer": "^6.5.1",
     "browser-sync": "^2.17.3",
@@ -119,7 +130,7 @@
     "tildify": "^1.2.0",
     "traceur": "^0.0.111",
     "ts-node": "^2.0.0",
-    "tslint": "^4.3.0",
+    "tslint": "~4.3.0",
     "typescript": "~2.0.9",
     "walk": "^2.3.9",
     "yargs": "^6.0.0"
@@ -133,12 +144,15 @@
     "@angular/platform-browser": "~2.4.0",
     "@angular/platform-browser-dynamic": "~2.4.0",
     "@angular/router": "~3.4.1",
-    "core-js": "^2.4.1",
     "express": "^4.14.0",
-    "intl": "^1.2.5",
+    "body-parser": "^1.15.2",
+    "compression": "^1.6.2",
     "mongoose": "^4.7.6",
+    "redis": "^2.6.3",
+    "core-js": "^2.4.1",
+    "intl": "^1.2.5",
     "reflect-metadata": "^0.1.8",
-    "rxjs": "~5.0.3",
+    "rxjs": "5.0.2",
     "systemjs": "0.19.41",
     "zone.js": "^0.7.2"
   }
