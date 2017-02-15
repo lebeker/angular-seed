@@ -1,104 +1,71 @@
-import * as http from "http";
-import * as express from "express";
-import * as bodyParser from "body-parser";
-import * as path from "path";
-import * as compression from "compression";
-import * as routes from "./routes";
+import * as http from 'http';
+import * as express from 'express';
+import * as bodyParser from 'body-parser';
+import * as path from 'path';
+import * as compression from 'compression';
+import * as cookieParser from 'cookie-parser';
+import * as routes from './routes';
 
-import { Init } from "./db/redis";
+import { Cache } from './db/redis';
+import { Db } from './db/mongo';
 
 /**
  * Client Dir
  * @note `dev` default.
  */
-var _clientDir = "../../client/dev";
-var app : any = express();
+var _clientDir = '../../client/dev';
+var app: any = express();
 
 export function init(port: number, mode: string) {
 
-  app.use(bodyParser.urlencoded({ extended: false }));
-  app.use(bodyParser.json());
-  app.use(bodyParser.text());
-  app.use(compression());
+    app.use(bodyParser.urlencoded({extended: false}));
+    app.use(bodyParser.json());
+    app.use(bodyParser.text());
+    app.use(cookieParser());
+    app.use(compression());
 
-  // DB Init
-  Init();
+    // Init Cache
+    new Cache;
+    // Init Db
+    new Db('test');
 
-  /**
-   * Dev Mode.
-   * @note Dev server will only give for you middleware.
-   */
-  if (mode === "dev") {
-
-    app.all("/*", function(req: any, res: any, next: any) {
-      res.header("Access-Control-Allow-Origin", "*");
-      res.header("Access-Control-Allow-Headers", "X-Requested-With");
-      next();
-    });
+    /**
+     * Dev Mode.
+     * @note Dev server will only give for you middleware.
+     */
 
     routes.init(app);
 
-    let root = path.resolve(process.cwd());
-    let clientRoot = path.resolve(process.cwd(), "./dist/client/dev");
-    app.use(express.static(root));
-    app.use(express.static(clientRoot));
-
-    var renderIndex = (req: express.Request, res: express.Response) => {
-      res.sendFile(path.resolve(__dirname, _clientDir + "/index.html"));
-    };
-    app.get("/*", renderIndex);
-
     /**
-     * Api Routes for `Development`.
+     * Server with gzip compression.
      */
-  } else {
-    /**
-     * Prod Mode.
-     * @note Prod mod will give you static + middleware.
-     */
+    return new Promise<http.Server>((resolve, reject) => {
+        let server = app.listen(port, () => {
+            var port = server.address().port;
+            console.log('App is listening on port:' + port);
+            resolve(server);
+        });
+    }).catch((e) => {
+        if (e.syscall !== 'listen') {
+            throw e;
+        }
 
-    /**
-     * Api Routes for `Production`.
-     */
-    routes.init(app);
+        var bind = typeof port === 'string'
+            ? 'Pipe ' + port
+            : 'Port ' + port;
 
-    /**
-     * Client Dir
-     */
-    _clientDir = "../../client/prod";
-
-    /**
-     * Static.
-     */
-    app.use("/js", express.static(path.resolve(__dirname, _clientDir + "/js")));
-    app.use("/css", express.static(path.resolve(__dirname, _clientDir + "/css")));
-    app.use("/assets", express.static(path.resolve(__dirname, _clientDir + "/assets")));
-
-    /**
-     * Spa Res Sender.
-     * @param req {any}
-     * @param res {any}
-     */
-    var renderIndex = function (req: express.Request, res: express.Response) {
-      res.sendFile(path.resolve(__dirname, _clientDir + "/index.html"));
-    };
-
-    /**
-     * Prevent server routing and use @ng2-router.
-     */
-    app.get("/*", renderIndex);
-  }
-
-  /**
-   * Server with gzip compression.
-   */
-  return new Promise<http.Server>((resolve, reject) => {
-    let server = app.listen(port, () => {
-      var port = server.address().port;
-      console.log("App is listening on port:" + port);
-      resolve(server);
+        // handle specific listen errors with friendly messages
+        switch (e.code) {
+            case 'EACCES':
+                console.error('\u001B[31m' + bind + ' requires elevated privileges' + '\u001B[0m');
+                process.exit(1);
+                break;
+            case 'EADDRINUSE':
+                console.error('\u001B[31m' + bind + ' is already in use' + '\u001B[0m');
+                process.exit(1);
+                break;
+            default:
+                throw e;
+        }
     });
-  }).catch((e) => {
-    console.error("Something there");
-  });
 };

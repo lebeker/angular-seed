@@ -1,23 +1,52 @@
-import * as redis from "redis";
+import * as redis from 'redis';
 
 /**
- * Init Names List.
+ * private static redis-client instance
  */
-export function Init() {
+var __redisClient: redis.RedisClient;
 
-    let redisClient = redis.createClient();
-    redisClient.on("error", (err: Error) => {
-        console.log("\u001B[31m" + err.message + "\u001B[0m");
-        redisClient.quit();
-    });
-    redisClient.on("ready", () => {
-        redisClient.sadd("name-list",
-            "Eoodsger Dijkstra",
-            "Dooonald Knuth",
-            "Alan Turing",
-            "Grace Hopper",
-            redis.print);
+/**
+ * Redis Cache.
+ */
+export class Cache {
+    constructor() {
+        if (!__redisClient) {
+            __redisClient = redis.createClient();
+            __redisClient.on('error', (err: Error) => {
+                console.log('\u001B[31m' + err.message + '\u001B[0m');
+                __redisClient.quit();
+            });
+            __redisClient.on('ready', () => {
+                this.init();
+            });
+        }
+    }
 
-        redisClient.quit();
-    });
+    public putSet(key:string, values:any[]) {
+        __redisClient.sadd(key, ...values, redis.print);
+        __redisClient.quit();
+    }
+
+    public getSet(key): Promise<any> {
+        return new Promise((resolve, reject) => {
+            __redisClient.smembers(key,
+                (err: any, replies: any) => {
+                    console.log(`
+          Reply length: ${replies.length}. 
+          Reply: ${replies}.`);
+                    resolve(replies);
+                });
+
+            __redisClient.quit();
+        });
+    }
+
+    private init() {
+        this.putSet('name-list', [
+            'Eoodsger Dijkstra',
+            'Dooonald Knuth',
+            'Alan Turing',
+            'Grace Hopper'
+        ]);
+    }
 }
