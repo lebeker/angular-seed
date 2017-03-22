@@ -11,9 +11,10 @@ export function Init() {
         redisClient.quit();
     });
     redisClient.on("ready", () => {
+        console.log("\u001B[33m" + 'REDIS READY' + "\u001B[0m");
         redisClient.sadd("name-list",
-            "Eoodsger Dijkstra",
-            "Dooonald Knuth",
+            "Edsger Dijkstra",
+            "Doonald Knuth",
             "Alan Turing",
             "Grace Hopper",
             redis.print);

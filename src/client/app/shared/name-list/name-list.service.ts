@@ -1,30 +1,53 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-// import 'rxjs/add/operator/do';  // for debugging
+import 'rxjs/add/operator/toPromise';
 
+import { Config } from '../config/env.config'
 /**
  * This class provides the NameList service with methods to read names and add names.
  */
 @Injectable()
-export class NameListService {
+export class ScientistService {
+
+  public static baseUrl = Config.API + '/api/name-list';
 
   /**
-   * Creates a new NameListService with the injected Http.
+   * Creates a new ScientistService with the injected Http.
    * @param {Http} http - The injected Http.
    * @constructor
    */
   constructor(private http: Http) {}
 
   /**
-   * Returns an Observable for the HTTP GET request for the JSON resource.
-   * @return {string[]} The Observable for the HTTP request.
+   * Returns an Promise for the HTTP GET request for the JSON resource.
+   * @return {string[]} The Promise for the HTTP request.
    */
-  get(): Observable<string[]> {
-    return this.http.get('/assets/data.json')
-                    .map((res: Response) => res.json())
-    //              .do(data => console.log('server data:', data))  // debug
+  list(): Promise<string[]> {
+    return this.http.get(ScientistService.baseUrl)
+                    .toPromise()
+                    .then((res: Response) => {
+                      console.log(res);
+                      return res.json()
+                    })
                     .catch(this.handleError);
+  }
+
+  post(name:string): Promise<boolean> {
+    return this.http.post(ScientistService.baseUrl, {name: name})
+        .toPromise()
+        .then((res: Response) => {
+          console.log(res);
+          return res.json();
+        })
+        .catch(this.handleError);
+  }
+
+  delete(name:string): Promise<boolean> {
+      return this.http.delete(ScientistService.baseUrl, {body: {name: name}})
+        .toPromise()
+        .then((res) => res.json())
+          .catch(this.handleError);
   }
 
   /**
@@ -36,7 +59,7 @@ export class NameListService {
     let errMsg = (error.message) ? error.message :
       error.status ? `${error.status} - ${error.statusText}` : 'Server error';
     console.error(errMsg); // log to console instead
-    return Observable.throw(errMsg);
+    return Promise.reject(errMsg);
   }
 }
 

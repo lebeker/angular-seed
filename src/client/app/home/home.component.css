@@ -11,3 +11,15 @@ ul {
   list-style-type: none;
   padding: 0 0 0 8px;
 }
+
+ul li span {
+  display: inline-block;
+  border-radius: 16px;
+  line-height: 16px;
+  background-color: red;
+  color: white;
+  width: 16px;
+  height: 16px;
+  padding-left: 3px;
+  font-weight: bold;
+}

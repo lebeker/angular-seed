@@ -32,7 +32,8 @@ export function init(port: number, mode: string) {
 
     app.all("/*", function(req: any, res: any, next: any) {
       res.header("Access-Control-Allow-Origin", "*");
-      res.header("Access-Control-Allow-Headers", "X-Requested-With");
+      res.header("Access-Control-Allow-Headers", "X-Requested-With, content-type");
+      res.header("Access-Control-Allow-Methods", "GET,HEAD,POST,DELETE,OPTIONS");
       next();
     });
 
