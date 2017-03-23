@@ -7,7 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import { ScientistService } from './name-list.service';
 
 export function main() {
-  describe('NameList Service', () => {
+  describe('Scientist Service', () => {
     let nameListService: ScientistService;
     let mockBackend: MockBackend;
 
@@ -28,7 +28,7 @@ export function main() {
     });
 
     it('should return an Observable when get called', async(() => {
-      expect(TestBed.get(ScientistService).get()).toEqual(jasmine.any(Observable));
+      expect(TestBed.get(ScientistService).list()).toEqual(jasmine.any(Observable));
     }));
 
     it('should resolve to list of names when get called', async(() => {
@@ -39,7 +39,7 @@ export function main() {
         c.mockRespond(new Response(new ResponseOptions({ body: '["Dijkstra", "Hopper"]' })));
       });
 
-      nameListService.get().subscribe((data: any) => {
+      nameListService.list().subscribe((data: any) => {
         expect(data).toEqual(['Dijkstra', 'Hopper']);
       });
     }));

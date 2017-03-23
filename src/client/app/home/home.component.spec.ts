@@ -33,7 +33,7 @@ export function main() {
             let homeInstance = fixture.debugElement.componentInstance;
             let homeDOMEl = fixture.debugElement.nativeElement;
             let mockScientistService = <MockScientistService>fixture.debugElement.injector.get(ScientistService);
-            let nameListServiceSpy = spyOn(mockScientistService, 'get').and.callThrough();
+            let nameListServiceSpy = spyOn(mockScientistService, 'list').and.callThrough();
 
             mockScientistService.returnValue = ['1', '2', '3'];
 
@@ -49,7 +49,7 @@ export function main() {
             fixture.detectChanges();
 
             expect(homeDOMEl.querySelectorAll('li').length).toEqual(4);
-            expect(homeDOMEl.querySelectorAll('li')[3].textContent).toEqual('Minko');
+            expect(homeDOMEl.querySelectorAll('li')[3].textContent).toMatch('Minko');
           });
 
       }));
@@ -60,10 +60,14 @@ class MockScientistService {
 
   returnValue: string[];
 
-  get(): Observable<string[]> {
-    return Observable.create((observer: any) => {
-      observer.next(this.returnValue);
-      observer.complete();
-    });
+  list(): Observable<string[]> {
+      return Observable.create((observer: any) => {
+          observer.next(this.returnValue);
+          observer.complete();
+      });
+  }
+  post(val:string): Promise<boolean> {
+      this.returnValue.push(val);
+      return Promise.resolve(true);
   }
 }

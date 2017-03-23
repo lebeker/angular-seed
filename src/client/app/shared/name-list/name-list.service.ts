@@ -21,14 +21,13 @@ export class ScientistService {
 
   /**
    * Returns an Promise for the HTTP GET request for the JSON resource.
-   * @return {string[]} The Promise for the HTTP request.
+   * @return {string[]} The Observable for the HTTP request.
    */
-  list(): Promise<string[]> {
+  list(): Observable<string[]> {
     return this.http.get(ScientistService.baseUrl)
-                    .toPromise()
-                    .then((res: Response) => {
-                      console.log(res);
-                      return res.json()
+                    //.toPromise()
+                    .map((res: Response) => {
+                        return res.json()
                     })
                     .catch(this.handleError);
   }
@@ -37,7 +36,6 @@ export class ScientistService {
     return this.http.post(ScientistService.baseUrl, {name: name})
         .toPromise()
         .then((res: Response) => {
-          console.log(res);
           return res.json();
         })
         .catch(this.handleError);

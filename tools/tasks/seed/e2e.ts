@@ -33,7 +33,7 @@ export = (done: any) => {
   process.env.LANG = 'en_US.UTF-8';
   new Protractor()
 //    .server(Config.PORT, Config.PROD_DEST)
-    .server(9000)
+    .server(9005)
     .then((server: any) => {
       gulp
         .src(join(Config.DEV_DEST, '**/*.e2e-spec.js'))

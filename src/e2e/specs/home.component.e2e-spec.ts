@@ -1,3 +1,5 @@
+import {browser, by, element} from 'protractor';
+
 describe('Home', () => {
 
   beforeEach(async () => {
@@ -10,15 +12,17 @@ describe('Home', () => {
 
   it('should have a list of computer scientists', () => {
     expect(element(by.css('sd-home ul')).getText())
-      .toEqual('Edsger Dijkstra\nDonald Knuth\nAlan Turing\nGrace Hopper');
+      .toMatch('Edsger Dijkstra');
   });
 
   it('should add a name to the list using the form', () => {
-    element(by.css('sd-home form input')).sendKeys('Tim Berners-Lee');
+    let newVal = 'Tim Berners-Lee' + (new Date()).toTimeString().replace(/[\(\)\+]/g, '');
+    element(by.css('sd-home form input')).sendKeys(newVal);
     element(by.css('sd-home form button')).click();
 
-    expect(element(by.css('sd-home ul')).getText())
-      .toEqual('Edsger Dijkstra\nDonald Knuth\nAlan Turing\nGrace Hopper\nTim Berners-Lee');
+    let txt = element(by.css('sd-home ul')).getText();
+    expect(txt).toMatch('Edsger Dijkstra');
+    expect(txt).toMatch(newVal);
   });
 
 });

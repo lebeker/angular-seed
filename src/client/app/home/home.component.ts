@@ -36,10 +36,10 @@ export class HomeComponent implements OnInit {
    */
   getNames() {
     this.nameListService.list()
-      .then((res) => {
-          console.log(res);
-          this.names = res;
-      });
+        .subscribe(
+            names => this.names = names,
+            error => this.errorMessage = <any>error
+        );
   }
 
   /**
@@ -60,10 +60,10 @@ export class HomeComponent implements OnInit {
     return false;
   }
 
-  deleteName(name):boolean {
+  deleteName(name:string):boolean {
     if (confirm('Really? You think ' + name + ' is not a scientist?'))
       this.nameListService.delete(name)
-          .then((res) => {
+          .then((res:boolean) => {
             if (res)
               this.getNames();
           });
