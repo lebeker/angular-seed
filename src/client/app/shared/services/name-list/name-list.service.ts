@@ -3,12 +3,15 @@ import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 // import 'rxjs/add/operator/do';  // for debugging
 
+import {config} from '../../../../../../tools/config';
+
 /**
  * This class provides the NameList service with methods to read names and add names.
  */
 @Injectable()
 export class NameListService {
 
+  e:any = API
   /**
    * Creates a new NameListService with the injected Http.
    * @param {Http} http - The injected Http.

@@ -1,4 +1,4 @@
-import * as common from '../../../../common';
-export class Scientist extends common.AScientist {
+import * as proto from '../../../../common';
+export class Scientist extends proto.Scientist {
 
 }

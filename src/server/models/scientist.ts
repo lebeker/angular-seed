@@ -1,7 +1,8 @@
 import mongoose = require('mongoose');
-import { AScientist } from '../../common/scientist';
+import * as proto from '../../common/scientist';
 
-export interface IScientistModel extends AScientist, mongoose.Document { }
+export interface IScientistModel extends proto.Scientist, mongoose.Document { }
+
 
 export var ScientistSchema = new mongoose.Schema({
     name: String,

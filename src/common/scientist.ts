@@ -1,4 +1,4 @@
-export abstract class AScientist {
+export abstract class Scientist {
     id: any;
     name: string;
     area: string[];
