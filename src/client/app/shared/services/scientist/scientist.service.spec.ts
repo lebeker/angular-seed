@@ -4,7 +4,7 @@ import { MockBackend } from '@angular/http/testing';
 
 import { Observable } from 'rxjs/Observable';
 
-import { ScientistService } from './name-list.service';
+import { ScientistService } from './scientist.service';
 
 export function main() {
   describe('Scientist Service', () => {

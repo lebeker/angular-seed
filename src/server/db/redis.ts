@@ -43,7 +43,7 @@ export class Cache {
     }
 
     private init() {
-        this.putSet('name-list', [
+        this.putSet('scientist', [
             'Eoodsger Dijkstra',
             'Dooonald Knuth',
             'Alan Turing',

@@ -8,7 +8,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { HomeComponent } from './home.component';
 
-import { ScientistService } from '../shared/services/name-list/name-list.service';
+import { ScientistService } from '../shared/services/scientist/scientist.service';
 
 export function main() {
   describe('Home component', () => {

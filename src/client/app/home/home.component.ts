@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ScientistService } from '../shared/services/name-list/name-list.service';
+import { ScientistService } from '../shared/services/scientist/scientist.service';
 
 
 /**

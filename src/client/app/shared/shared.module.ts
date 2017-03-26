@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
-import { ScientistService } from '../shared/services/name-list/name-list.service';
+import { ScientistService } from './services/scientist/scientist.service';
 
 
 /**

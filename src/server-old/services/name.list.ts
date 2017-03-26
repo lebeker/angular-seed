@@ -9,7 +9,7 @@ export function nameList(app: any) {
    * Get name list.
    * @static
    */
-  app.get("/api/name-list/static",
+  app.get("/api/scientist/static",
     (req: any, res: any, next: any) => {
 
       res.json(nameData);
@@ -19,13 +19,13 @@ export function nameList(app: any) {
    * Get name list.
    * @database
    */
-  app.get("/api/name-list",
+  app.get("/api/scientist",
     (req: any, res: any, next: any) => {
 
       let redisClient = redis.createClient(),
           nameList: string[] = [];
 
-        redisClient.smembers("name-list",
+        redisClient.smembers("scientist",
         (err: any, replies: any) => {
           console.log(`
             Reply length: ${replies.length}. 
@@ -42,14 +42,14 @@ export function nameList(app: any) {
    * Add new name.
    * @database
    */
-  app.post("/api/name-list",
+  app.post("/api/scientist",
     (req: any, res: any, next: any) => {
 
       let redisClient = redis.createClient(),
           request = req.body;
           // request = JSON.parse(req.body);
 
-        redisClient.sadd("name-list", request.name,
+        redisClient.sadd("scientist", request.name,
         (err: any, replies: any) => {
           console.log(`Reply: ${replies}.`);
 
@@ -63,14 +63,14 @@ export function nameList(app: any) {
    * Delete name.
    * @database
    */
-  app.delete("/api/name-list",
+  app.delete("/api/scientist",
     (req: any, res: any, next: any) => {
 
       let redisClient = redis.createClient(),
           request = req.body;
           // request = JSON.parse(req.body);
 console.log("DELELTE: " + JSON.stringify(request));
-        redisClient.srem("name-list", request.name,
+        redisClient.srem("scientist", request.name,
         (err: any, replies: any) => {
           console.log(`
             Reply length: ${replies.length}. 

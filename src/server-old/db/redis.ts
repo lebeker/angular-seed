@@ -11,7 +11,7 @@ export function Init() {
         redisClient.quit();
     });
     redisClient.on("ready", () => {
-        redisClient.sadd("name-list",
+        redisClient.sadd("scientist",
             "Eoodsger Dijkstra",
             "Dooonald Knuth",
             "Alan Turing",

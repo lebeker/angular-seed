@@ -3,12 +3,8 @@ import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/toPromise';
 
-<<<<<<< HEAD:src/client/app/shared/services/name-list/name-list.service.ts
-import {config} from '../../../../../../tools/config';
+import { Config } from '../../config/env.config';
 
-=======
-import { Config } from '../config/env.config'
->>>>>>> master:src/client/app/shared/name-list/name-list.service.ts
 /**
  * This class provides the NameList service with methods to read names and add names.
  */
@@ -17,7 +13,6 @@ export class ScientistService {
 
   public static baseUrl = Config.API + '/api/name-list';
 
-  e:any = API
   /**
    * Creates a new ScientistService with the injected Http.
    * @param {Http} http - The injected Http.
