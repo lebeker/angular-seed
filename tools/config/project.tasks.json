@@ -2,7 +2,7 @@
   "test": [
     "tslint",
     "build.test",
-    "karma.run.with_coverage"
+    "karma.run"
   ]
 }
 
