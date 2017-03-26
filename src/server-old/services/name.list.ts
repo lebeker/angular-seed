@@ -28,8 +28,9 @@ export function nameList(app: any) {
         redisClient.smembers("name-list",
         (err: any, replies: any) => {
           console.log(`
-          Reply length: ${replies.length}. 
-          Reply: ${replies}.`);
+            Reply length: ${replies.length}. 
+            Reply: ${replies}.`);
+
           nameList = replies;
           res.json(nameList);
       });
@@ -50,8 +51,7 @@ export function nameList(app: any) {
 
         redisClient.sadd("name-list", request.name,
         (err: any, replies: any) => {
-          console.log(`
-          Reply: ${replies}.`);
+          console.log(`Reply: ${replies}.`);
 
           res.json({success: true});
         });
@@ -69,12 +69,12 @@ export function nameList(app: any) {
       let redisClient = redis.createClient(),
           request = req.body;
           // request = JSON.parse(req.body);
-
+console.log("DELELTE: " + JSON.stringify(request));
         redisClient.srem("name-list", request.name,
         (err: any, replies: any) => {
           console.log(`
-          Reply length: ${replies.length}. 
-          Reply: ${replies}.`);
+            Reply length: ${replies.length}. 
+            Reply: ${replies}.`);
 
           res.json({success: true});
         });

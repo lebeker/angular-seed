@@ -17,6 +17,7 @@ export class Cache {
                 __redisClient.quit();
             });
             __redisClient.on('ready', () => {
+                console.log("\u001B[33m" + 'REDIS READY' + "\u001B[0m");
                 this.init();
             });
         }

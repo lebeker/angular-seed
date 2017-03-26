@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { NameListService } from '../shared/services/name-list/name-list.service';
+import { ScientistService } from '../shared/services/name-list/name-list.service';
+
 
 /**
  * This class represents the lazy loaded HomeComponent.
@@ -18,11 +19,11 @@ export class HomeComponent implements OnInit {
 
   /**
    * Creates an instance of the HomeComponent with the injected
-   * NameListService.
+   * ScientistService.
    *
-   * @param {NameListService} nameListService - The injected NameListService.
+   * @param {ScientistService} nameListService - The injected ScientistService.
    */
-  constructor(public nameListService: NameListService) {}
+  constructor(public nameListService: ScientistService) {}
 
   /**
    * Get the names OnInit
@@ -35,11 +36,11 @@ export class HomeComponent implements OnInit {
    * Handle the nameListService observable
    */
   getNames() {
-    this.nameListService.get()
-      .subscribe(
-        names => this.names = names,
-        error => this.errorMessage = <any>error
-      );
+    this.nameListService.list()
+        .subscribe(
+            names => this.names = names,
+            error => this.errorMessage = <any>error
+        );
   }
 
   /**
@@ -47,10 +48,28 @@ export class HomeComponent implements OnInit {
    * @return {boolean} false to prevent default form submit behavior to refresh the page.
    */
   addName(): boolean {
-    // TODO: implement nameListService.post
-    this.names.push(this.newName);
-    this.newName = '';
+    this.nameListService
+        .post(this.newName)
+        .then((res) => {
+          if (res) {
+            this.names.push(this.newName);
+            this.newName = '';
+          } else {
+            this.errorMessage = 'Your name sounds bad.';
+          }
+        })
     return false;
   }
 
+  deleteName(name:string):boolean {
+    if (confirm('Really? You think ' + name + ' is not a scientist?'))
+      this.nameListService.delete(name)
+          .then((res:boolean) => {
+            if (res)
+              this.getNames();
+          });
+      //alert('Maybe later');
+
+    return false;
+  }
 }

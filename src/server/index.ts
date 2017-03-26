@@ -6,17 +6,17 @@ import * as compression from 'compression';
 import * as cookieParser from 'cookie-parser';
 import * as routes from './routes';
 
-import { Cache } from './db/redis';
-import { Db } from './db/mongo';
+import {Cache} from './db/redis';
+import {Db} from './db/mongo';
 
 /**
  * Client Dir
- * @note `dev` default.
+ * @note `api` default.
  */
 var _clientDir = '../../client/dev';
 var app: any = express();
 
-export function init(port: number, mode: string) {
+export function init(port: number, mode: string = 'api') {
 
     app.use(bodyParser.urlencoded({extended: false}));
     app.use(bodyParser.json());
@@ -28,6 +28,35 @@ export function init(port: number, mode: string) {
     new Cache;
     // Init Db
     new Db('test');
+
+    app.all("/*", function (req: any, res: any, next: any) {
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Headers", "X-Requested-With, content-type");
+        res.header("Access-Control-Allow-Methods", "GET,HEAD,POST,DELETE,OPTIONS");
+        next();
+    });
+
+    /**
+     * Full Mode.
+     * @note Full mode serve both API & angular-index.html
+     */
+    if (mode === "full") {
+        routes.init(app);
+
+        let root = path.resolve(process.cwd());
+        let clientRoot = path.resolve(process.cwd(), "./dist/client/dev");
+        app.use(express.static(root));
+        app.use(express.static(clientRoot));
+
+        var renderIndex = (req: express.Request, res: express.Response) => {
+            res.sendFile(path.resolve(__dirname, _clientDir + "/index.html"));
+        };
+        app.get("/*", renderIndex);
+
+        /**
+         * Api Routes for `Development`.
+         */
+    }
 
     /**
      * Dev Mode.

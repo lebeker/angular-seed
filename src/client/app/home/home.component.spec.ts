@@ -7,7 +7,8 @@ import {
 import { Observable } from 'rxjs/Observable';
 
 import { HomeComponent } from './home.component';
-import { NameListService } from '../shared/services/name-list/name-list.service';
+
+import { ScientistService } from '../shared/services/name-list/name-list.service';
 
 export function main() {
   describe('Home component', () => {
@@ -18,7 +19,7 @@ export function main() {
         imports: [FormsModule],
         declarations: [HomeComponent],
         providers: [
-          { provide: NameListService, useValue: new MockNameListService() }
+          { provide: ScientistService, useValue: new MockScientistService() }
         ]
       });
 
@@ -32,14 +33,14 @@ export function main() {
             let fixture = TestBed.createComponent(HomeComponent);
             let homeInstance = fixture.debugElement.componentInstance;
             let homeDOMEl = fixture.debugElement.nativeElement;
-            let mockNameListService = <MockNameListService>fixture.debugElement.injector.get(NameListService);
-            let nameListServiceSpy = spyOn(mockNameListService, 'get').and.callThrough();
+            let mockScientistService = <MockScientistService>fixture.debugElement.injector.get(ScientistService);
+            let nameListServiceSpy = spyOn(mockScientistService, 'list').and.callThrough();
 
-            mockNameListService.returnValue = ['1', '2', '3'];
+            mockScientistService.returnValue = ['1', '2', '3'];
 
             fixture.detectChanges();
 
-            expect(homeInstance.nameListService).toEqual(jasmine.any(MockNameListService));
+            expect(homeInstance.nameListService).toEqual(jasmine.any(MockScientistService));
             expect(homeDOMEl.querySelectorAll('li').length).toEqual(3);
             expect(nameListServiceSpy.calls.count()).toBe(1);
 
@@ -49,21 +50,25 @@ export function main() {
             fixture.detectChanges();
 
             expect(homeDOMEl.querySelectorAll('li').length).toEqual(4);
-            expect(homeDOMEl.querySelectorAll('li')[3].textContent).toEqual('Minko');
+            expect(homeDOMEl.querySelectorAll('li')[3].textContent).toMatch('Minko');
           });
 
       }));
   });
 }
 
-class MockNameListService {
+class MockScientistService {
 
   returnValue: string[];
 
-  get(): Observable<string[]> {
-    return Observable.create((observer: any) => {
-      observer.next(this.returnValue);
-      observer.complete();
-    });
+  list(): Observable<string[]> {
+      return Observable.create((observer: any) => {
+          observer.next(this.returnValue);
+          observer.complete();
+      });
+  }
+  post(val:string): Promise<boolean> {
+      this.returnValue.push(val);
+      return Promise.resolve(true);
   }
 }
