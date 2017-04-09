@@ -2,7 +2,7 @@ import * as mongoose from 'mongoose';
 
 export class Db {
     constructor(dbName: string, host:string = 'localhost') {
-        mongoose.Promise = global.Promise;
+        (mongoose as any).Promise = global.Promise;
         // Connect to MongoDB and create/use database called "ntoes"
         let res =mongoose.connect('mongodb://' + host + '/' + dbName, {}, (err: Error) => {
             if (err)

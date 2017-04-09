@@ -13,10 +13,12 @@ import {Db} from './db/mongo';
  * Client Dir
  * @note `api` default.
  */
-var _clientDir = '../../client/dev';
+var _clientDir = '../../client/';
 var app: any = express();
 
-export function init(port: number, mode: string = 'api') {
+export function init(port: number, env: string, mode: string = 'api') {
+
+    _clientDir = _clientDir + env.toLowerCase();
 
     app.use(bodyParser.urlencoded({extended: false}));
     app.use(bodyParser.json());

@@ -1,6 +1,6 @@
 import { Cache } from '../db/redis';
 import { Scientist } from '../models/scientist';
-import { AScientist } from '../../common/scientist';
+import { Scientist as AScientist } from '../../common/scientist';
 
 export function ScientistController(app: any) {
 
@@ -8,7 +8,7 @@ export function ScientistController(app: any) {
      * Get scientists list.
      * @static
      */
-    app.get('/scientist/list/:search',
+    app.get('/scientist/list/:search*?',
         (req: any, res: any, next: any) => {
             Scientist.find({name:new RegExp(req.params.search, 'i')}, (err: Error, data: any) => {
                 if (!err) {
@@ -29,7 +29,7 @@ export function ScientistController(app: any) {
         (req: any, res: any, next: any) => {
 
             let data:AScientist = <AScientist>req.body,
-                cb = (err, dbres) => {
+                cb = (err:any, dbres:any) => {
                     if (err) {
                         console.error('failed to save');
                         res.statusCode = 400;
@@ -51,7 +51,7 @@ export function ScientistController(app: any) {
         (req: any, res: any, next: any) => {
 
             let id = req.params._id;
-            Scientist.remove(id, (err) => {
+            Scientist.remove(id, (err:any) => {
                 if (err) {
                     console.error('failed to save');
                     res.statusCode = 400;

@@ -10,6 +10,8 @@ import { SeedConfig } from './seed.config';
 export class ProjectConfig extends SeedConfig {
 
   PROJECT_TASKS_DIR = join(process.cwd(), this.TOOLS_DIR, 'tasks', 'project');
+  APP_SERVER_DEST = `${this.DIST_DIR}_srv/${this.BUILD_TYPE}`;
+  APP_SERVER_SRC = `src/server`;
 
   constructor() {
     super();

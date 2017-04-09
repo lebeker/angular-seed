@@ -28,7 +28,7 @@ export class Cache {
         __redisClient.quit();
     }
 
-    public getSet(key): Promise<any> {
+    public getSet(key:string): Promise<any> {
         return new Promise((resolve, reject) => {
             __redisClient.smembers(key,
                 (err: any, replies: any) => {

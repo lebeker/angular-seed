@@ -11,7 +11,7 @@ import { Config } from '../../config/env.config';
 @Injectable()
 export class ScientistService {
 
-  public static baseUrl = Config.API + '/api/name-list';
+  public static baseUrl = Config.API + '/scientist/';
 
   /**
    * Creates a new ScientistService with the injected Http.
@@ -25,7 +25,8 @@ export class ScientistService {
    * @return {string[]} The Observable for the HTTP request.
    */
   list(): Observable<string[]> {
-    return this.http.get(ScientistService.baseUrl)
+      console.log("list requested\n");
+    return this.http.get(ScientistService.baseUrl + 'list')
                     //.toPromise()
                     .map((res: Response) => {
                         return res.json()
