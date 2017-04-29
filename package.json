@@ -42,7 +42,7 @@
     "webdriver-update": "node_modules/protractor/bin/webdriver-manager update",
     "compodoc": "node_modules/.bin/compodoc -p src/client/tsconfig.json",
     "serve.compodoc": "node_modules/.bin/compodoc -s -r 8085",
-    "serve.api": "node app.server.dev.js",
+    "serve.api": "node dist.js",
     "serve.api.prod": "node app.server.prod.js"
   },
   "author": "Minko Gechev <mgechev>",
