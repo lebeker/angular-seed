@@ -33,12 +33,16 @@ export function ScientistController(app: any) {
                     if (err) {
                         console.error('failed to save');
                         res.statusCode = 400;
+                        res.json({success: false});
                     }
-                    res.json({success:!err});
+                    else {
+                        res.json({success: true, id: dbres._id});
+                    }
+
                 };
 
-            if (!!data.id)
-                Scientist.update(data.id, data, cb);
+            if (!!data._id)
+                Scientist.update(data._id, data, cb);
             else
                 Scientist.create(data, cb);
         });
@@ -47,11 +51,10 @@ export function ScientistController(app: any) {
      * Delete name.
      * @database
      */
-    app.delete('/scientist/:id',
+    app.delete('/scientist/:id*?',
         (req: any, res: any, next: any) => {
-
-            let id = req.params._id;
-            Scientist.remove(id, (err:any) => {
+            let id = req.params.id || req.body.id;
+            Scientist.remove({_id:id}, (err:any) => {
                 if (err) {
                     console.error('failed to save');
                     res.statusCode = 400;

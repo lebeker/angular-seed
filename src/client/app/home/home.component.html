@@ -6,5 +6,5 @@
 </form>
 
 <ul>
-  <li *ngFor="let name of names">{{name}} <span (click)="deleteName(name)">&times;</span></li>
+  <li *ngFor="let scientist of scientists">{{scientist.name}} <span (click)="deleteName(scientist._id)">&times;</span></li>
 </ul>

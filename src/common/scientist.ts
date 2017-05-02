@@ -1,5 +1,5 @@
 export abstract class Scientist {
-    id: any;
+    _id: any;
     name: string;
     area: string[];
 }

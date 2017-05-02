@@ -99,6 +99,16 @@
     "watch.dev"
   ],
 
+  "start.all": [
+    "start.api",
+    "serve.dev"
+  ],
+
+  "start.api": [
+    "build.api",
+    "serve.api"
+  ],
+
   "serve.e2e": [
     "tslint",
     "build.dev",

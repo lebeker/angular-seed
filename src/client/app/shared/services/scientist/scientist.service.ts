@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/toPromise';
 
 import { Config } from '../../config/env.config';
+import {Scientist} from "../../models/scientist";
 
 /**
  * This class provides the NameList service with methods to read names and add names.
@@ -24,7 +25,7 @@ export class ScientistService {
    * Returns an Promise for the HTTP GET request for the JSON resource.
    * @return {string[]} The Observable for the HTTP request.
    */
-  list(): Observable<string[]> {
+  list(): Observable<Scientist[]> {
       console.log("list requested\n");
     return this.http.get(ScientistService.baseUrl + 'list')
                     //.toPromise()
@@ -43,8 +44,8 @@ export class ScientistService {
         .catch(this.handleError);
   }
 
-  delete(name:string): Promise<boolean> {
-      return this.http.delete(ScientistService.baseUrl, {body: {name: name}})
+  delete(id:any): Promise<boolean> {
+      return this.http.delete(ScientistService.baseUrl, {body: {id: id}})
         .toPromise()
         .then((res) => res.json())
           .catch(this.handleError);

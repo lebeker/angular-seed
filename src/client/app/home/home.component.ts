@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ScientistService } from '../shared/services/scientist/scientist.service';
+import {Scientist} from "../shared/models/scientist";
 
 
 /**
@@ -15,7 +16,7 @@ export class HomeComponent implements OnInit {
 
   newName: string = '';
   errorMessage: string;
-  names: any[] = [];
+  scientists: Scientist[] = [];
 
   /**
    * Creates an instance of the HomeComponent with the injected
@@ -38,7 +39,7 @@ export class HomeComponent implements OnInit {
   getNames() {
     this.nameListService.list()
         .subscribe(
-            names => this.names = names,
+            scientists => this.scientists = scientists,
             error => this.errorMessage = <any>error
         );
   }
@@ -50,9 +51,9 @@ export class HomeComponent implements OnInit {
   addName(): boolean {
     this.nameListService
         .post(this.newName)
-        .then((res) => {
+        .then((res:any) => {
           if (res) {
-            this.names.push(this.newName);
+            this.scientists.push({name:this.newName, _id: res.id} as Scientist);
             this.newName = '';
           } else {
             this.errorMessage = 'Your name sounds bad.';
@@ -61,9 +62,9 @@ export class HomeComponent implements OnInit {
     return false;
   }
 
-  deleteName(name:string):boolean {
+  deleteName(id:any, name:string = 'he'):boolean {
     if (confirm('Really? You think ' + name + ' is not a scientist?'))
-      this.nameListService.delete(name)
+      this.nameListService.delete(id)
           .then((res:boolean) => {
             if (res)
               this.getNames();
